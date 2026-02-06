@@ -35,14 +35,11 @@ class ProjectController extends Controller
     }
 
     // 3. Menyimpan data proyek baru ke Database
+    // ... (bagian atas tetap sama) ...
+
     public function store(Request $request)
     {
-        $request->validate([
-            'judul' => 'required',
-            'deskripsi' => 'required',
-            'tech_stack' => 'required',
-            'tahun' => 'required|numeric',
-        ]);
+        // ... (validasi tetap sama) ...
 
         Project::create([
             'judul' => $request->judul,
@@ -53,14 +50,13 @@ class ProjectController extends Controller
             'tahun' => $request->tahun,
         ]);
 
-        return redirect()->route('proyek.index')->with('sukses', 'Proyek berhasil ditambah!');
+        // SESUAIKAN: Mengarah ke nama rute yang benar di web.php
+        return redirect()->route('admin.project.index')->with('sukses', 'Proyek berhasil ditambah!');
     }
 
-    public function show($slug)
-    {
-        $proyek = Project::where('slug', $slug)->firstOrFail();
-        return view('user.detail', compact('proyek'));
-    }
+    
+
+// ... (sisanya sudah oke) ...
 
     // 4. Menampilkan Form Edit
     public function edit($id)
@@ -83,7 +79,7 @@ class ProjectController extends Controller
             'tahun' => $request->tahun,
         ]);
 
-        return redirect()->route('proyek.index')->with('sukses', 'Proyek berhasil diperbarui!');
+        return redirect()->route('admin.project.index')->with('sukses', 'Proyek berhasil diperbarui!');
     }
 
     // 6. Menghapus Proyek
@@ -92,6 +88,6 @@ class ProjectController extends Controller
         $proyek = Project::findOrFail($id);
         $proyek->delete();
 
-        return redirect()->route('proyek.index')->with('sukses', 'Proyek berhasil dihapus!');
+        return redirect()->route('admin.project.index')->with('sukses', 'Proyek berhasil dihapus!');
     }
 }
