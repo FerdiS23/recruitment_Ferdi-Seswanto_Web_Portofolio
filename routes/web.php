@@ -1,21 +1,38 @@
 <?php
 
 use App\Http\Controllers\ProjectController;
+use App\Http\Controllers\AdminController;
+use App\Http\Controllers\AuthController;
 use Illuminate\Support\Facades\Route;
 
-// Halaman depan untuk Pengunjung (User)
+/*
+|--------------------------------------------------------------------------
+| Public Routes (Akses Pengunjung)
+|--------------------------------------------------------------------------
+*/
 Route::get('/', [ProjectController::class, 'indexUser'])->name('users.index');
+Route::get('/project/{slug}', [ProjectController::class, 'show'])->name('users.show');
 
-// Grup Admin
-Route::prefix('admin')->name('admin.')->group(function () {
-    // Satu Resource ini sudah otomatis membuat rute:
-    // admin.project.index, admin.project.create, admin.project.store, dll.
-    Route::resource('project', ProjectController::class);
+/*
+|--------------------------------------------------------------------------
+| Authentication Routes
+|--------------------------------------------------------------------------
+*/
+Route::get('/login', [AuthController::class, 'showLogin'])->name('login')->middleware('guest');
+Route::post('/login', [AuthController::class, 'authenticate']);
+Route::post('/logout', [AuthController::class, 'logout'])->name('logout');
+
+/*
+|--------------------------------------------------------------------------
+| Admin Routes (Hanya untuk User yang Login)
+|--------------------------------------------------------------------------
+*/
+Route::middleware(['auth'])->prefix('admin')->name('admin.')->group(function () {
     
-    // Dashboard utama admin (opsional jika ingin dipisah dari resource index)
-    Route::get('/', [ProjectController::class, 'index'])->name('dashboard');
-    Route::get('/project/create', [ProjectController::class, 'create'])
-    ->name('project.create');
+    // Dashboard Utama
+    Route::get('/dashboard', [AdminController::class, 'index'])->name('dashboard');
 
+    // Manajemen Proyek (Resource meliputi: index, create, store, edit, update, destroy)
+    Route::resource('project', AdminController::class)->except(['show']);
     
 });
