@@ -14,4 +14,6 @@ Route::prefix('admin')->name('admin.')->group(function () {
     
     // Dashboard utama admin (opsional jika ingin dipisah dari resource index)
     Route::get('/', [ProjectController::class, 'index'])->name('dashboard');
+    Route::get('/project/create', [ProjectController::class, 'create'])
+    ->name('project.create');
 });

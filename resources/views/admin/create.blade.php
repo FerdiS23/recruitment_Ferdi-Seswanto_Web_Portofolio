@@ -1,6 +1,6 @@
 <h2>Tambah Proyek Baru</h2>
 
-<form action="{{ route('proyek.store') }}" method="POST">
+<form action="{{ route('admin.project.store') }}" method="POST">
     @csrf
     <div>
         <label>Judul Proyek</label><br>

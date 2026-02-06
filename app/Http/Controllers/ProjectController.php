@@ -16,7 +16,7 @@ class ProjectController extends Controller
     {
         $semuaProyek = Project::all();
         // Mengarah ke resources/views/admin/index.blade.php
-        return view('admin.index', compact('semuaProyek'));
+        return view('admin.dashboard', compact('semuaProyek'));
     }
 
     // FUNGSI UNTUK USER (Menampilkan Kartu Portofolio)
